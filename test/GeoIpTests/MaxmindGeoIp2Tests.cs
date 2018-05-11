@@ -14,7 +14,7 @@ namespace GeoIpTests
 
         public MaxmindGeoIp2Tests()
         {
-            _databaseLocation = Path.Combine(Environment.CurrentDirectory, @"..\..\db\GeoLite2-City.mmdb");
+            _databaseLocation = Path.Combine(Environment.CurrentDirectory, @"..\..\..\db\GeoLite2-City.mmdb");
         }
 
         [Fact]
