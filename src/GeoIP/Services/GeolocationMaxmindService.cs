@@ -1,16 +1,16 @@
-﻿using EPiServer.Web;
-using MaxMind.GeoIP2;
-using Pixie.Extensions.Maxmind.GeoIp.Models;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Net;
 using System.Net.Sockets;
+using EPiServer.Web;
+using MaxMind.GeoIP2;
+using Pixie.Extensions.Maxmind.GeoIp.Models;
 
 namespace Pixie.Extensions.Maxmind.GeoIp.Services
 {
     public class GeolocationMaxmindService : IGeolocationService
     {
-        private string maxMindDatabaseFileName = "GeoLite2-City.mmdb";
+        private string _maxMindDatabaseFileName = "GeoLite2-City.mmdb";
 
         public GeoLocationResult GetGeoLocation(IPAddress address, NameValueCollection config)
         {
@@ -18,18 +18,18 @@ namespace Pixie.Extensions.Maxmind.GeoIp.Services
 
             if (!string.IsNullOrEmpty(text))
             {
-                maxMindDatabaseFileName = VirtualPathUtilityEx.RebasePhysicalPath(text);
+                _maxMindDatabaseFileName = VirtualPathUtilityEx.RebasePhysicalPath(text);
                 config.Remove("databaseFileName");
             }
 
-            if (string.IsNullOrWhiteSpace(maxMindDatabaseFileName))
+            if (string.IsNullOrWhiteSpace(_maxMindDatabaseFileName))
             {
                 throw new ArgumentException("db name is not provided");
             }
 
-            if (!System.IO.File.Exists(maxMindDatabaseFileName))
+            if (!System.IO.File.Exists(_maxMindDatabaseFileName))
             {
-                throw new ArgumentException(string.Format("db does not exist at location {0}", maxMindDatabaseFileName));
+                throw new ArgumentException(string.Format("db does not exist at location {0}", _maxMindDatabaseFileName));
             }
 
             if (address.AddressFamily != AddressFamily.InterNetwork &&
@@ -38,7 +38,7 @@ namespace Pixie.Extensions.Maxmind.GeoIp.Services
                 return null;
             }
 
-            using (var reader = new DatabaseReader(maxMindDatabaseFileName))
+            using (var reader = new DatabaseReader(_maxMindDatabaseFileName))
             {
                 var dbResult = reader.City(address);
 
@@ -47,19 +47,19 @@ namespace Pixie.Extensions.Maxmind.GeoIp.Services
                     return null;
                 }
 
-                GeoLocationResult result = new GeoLocationResult();
-                result.CountryCode = dbResult.Country.IsoCode;
-                result.CountryName = dbResult.Country.Name;
-                result.Latitude = dbResult.Location.Latitude ?? 0;
-                result.Longitude = dbResult.Location.Longitude ?? 0;
-                result.MetroCode = dbResult.Location.MetroCode ?? 0;
-                result.City = dbResult.City.Name;
-                result.PostalCode = dbResult.Postal.Code;
-                result.CountinentCode = dbResult.Continent.Code;
-                result.Region = dbResult?.MostSpecificSubdivision?.IsoCode;
-                result.RegionName = dbResult.MostSpecificSubdivision?.Name;
-                return result;
-
+                return new GeoLocationResult
+                {
+                    CountryCode = dbResult.Country.IsoCode,
+                    CountryName = dbResult.Country.Name,
+                    Latitude = dbResult.Location.Latitude ?? 0,
+                    Longitude = dbResult.Location.Longitude ?? 0,
+                    MetroCode = dbResult.Location.MetroCode ?? 0,
+                    City = dbResult.City.Name,
+                    PostalCode = dbResult.Postal.Code,
+                    CountinentCode = dbResult.Continent.Code,
+                    Region = dbResult?.MostSpecificSubdivision?.IsoCode,
+                    RegionName = dbResult.MostSpecificSubdivision?.Name
+                };
             }
         }
     }

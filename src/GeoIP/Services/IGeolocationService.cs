@@ -1,6 +1,6 @@
-﻿using Pixie.Extensions.Maxmind.GeoIp.Models;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Net;
+using Pixie.Extensions.Maxmind.GeoIp.Models;
 
 namespace Pixie.Extensions.Maxmind.GeoIp.Services
 {

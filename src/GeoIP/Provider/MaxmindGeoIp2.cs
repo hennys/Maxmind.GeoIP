@@ -1,37 +1,29 @@
-﻿using EPiServer.Personalization;
-using Pixie.Extensions.Maxmind.GeoIp.Models;
-using Pixie.Extensions.Maxmind.GeoIp.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
+using EPiServer.Personalization;
+using Pixie.Extensions.Maxmind.GeoIp.Models;
+using Pixie.Extensions.Maxmind.GeoIp.Services;
 
 namespace Pixie.Extensions.Maxmind.GeoIp.Provider
 {
     public class MaxmindGeoIp2 : GeolocationProviderBase
     {
+        private readonly IGeolocationService _geolocationService;
+        private readonly NameValueCollection _baseConfig = new NameValueCollection();
+        private readonly NameValueCollection _extraConfig = new NameValueCollection();
+        private Capabilities _capabilities;
 
-        private readonly IGeolocationService geolocationService;
-        private readonly NameValueCollection baseConfig = new NameValueCollection();
-        private readonly NameValueCollection extraConfig = new NameValueCollection();
-        private Capabilities capabilities;
-
-        public MaxmindGeoIp2() : 
-            this(new GeolocationMaxmindService()) { }
+        public MaxmindGeoIp2() : this(new GeolocationMaxmindService()) { }
 
         public MaxmindGeoIp2(IGeolocationService geolocationService)
         {
-            this.geolocationService = geolocationService;
+            _geolocationService = geolocationService;
         }
 
-        public override Capabilities Capabilities
-        {
-            get
-            {
-                return capabilities;
-            }
-        }
+        public override Capabilities Capabilities => _capabilities;
 
         public override void Initialize(string name, NameValueCollection config)
         {
@@ -42,27 +34,25 @@ namespace Pixie.Extensions.Maxmind.GeoIp.Provider
                 {
                     case "name":
                     case "type":
-                        baseConfig.Add(key, config[i]);
+                        _baseConfig.Add(key, config[i]);
                         break;
                     default:
-                        extraConfig.Add(key, config[i]);
+                        _extraConfig.Add(key, config[i]);
                         break;
                 }
             }
 
-            capabilities = (Capabilities.Location | Capabilities.ContinentCode | Capabilities.CountryCode | Capabilities.Region);
+            _capabilities = (Capabilities.Location | Capabilities.ContinentCode | Capabilities.CountryCode | Capabilities.Region);
 
-            base.Initialize(name, baseConfig);
+            base.Initialize(name, _baseConfig);
         }
 
-        public override IEnumerable<string> GetContinentCodes()
-        {
-            return Geographics.Continents.Keys;
-        }
+        public override IEnumerable<string> GetContinentCodes() 
+            => Geographics.Continents.Keys;
 
         public override IEnumerable<string> GetCountryCodes(string continentCode)
         {
-            string foundContinentCode = string.Empty;
+            string foundContinentCode;
             IEnumerable<Country> countries = from country in Geographics.Countries
                                              where !country.Code.Equals("--", StringComparison.Ordinal) && !country.Code.Equals("EU", StringComparison.Ordinal) && !country.Code.Equals("AP", StringComparison.Ordinal) && Geographics.CountryToContinent.TryGetValue(country.Code, out foundContinentCode) && foundContinentCode.Equals(continentCode, StringComparison.OrdinalIgnoreCase)
                                              select country;
@@ -72,21 +62,16 @@ namespace Pixie.Extensions.Maxmind.GeoIp.Provider
 
         public override IEnumerable<string> GetRegions(string countryCode)
         {
-            if (countryCode == null)
-            {
-                throw new ArgumentNullException("countryCode");
-            }
-            IDictionary<string, string> dictionary;
-            if (Geographics.Regions.TryGetValue(countryCode, out dictionary))
+            if (countryCode == null) throw new ArgumentNullException(nameof(countryCode));
+
+            if (Geographics.Regions.TryGetValue(countryCode, out var dictionary))
             {
                 return dictionary.Values;
             }
-            return new List<string>();
+            return Enumerable.Empty<string>();
         }
 
-        public override IGeolocationResult Lookup(IPAddress address)
-        {
-            return geolocationService.GetGeoLocation(address, extraConfig);
-        }
+        public override IGeolocationResult Lookup(IPAddress address) 
+            => _geolocationService.GetGeoLocation(address, _extraConfig);
     }
 }

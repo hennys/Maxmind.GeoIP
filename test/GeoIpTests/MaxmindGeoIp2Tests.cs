@@ -1,8 +1,8 @@
-﻿using Pixie.Extensions.Maxmind.GeoIp.Services;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using Pixie.Extensions.Maxmind.GeoIp.Services;
 using Xunit;
 
 namespace GeoIpTests
@@ -24,6 +24,5 @@ namespace GeoIpTests
             var result = service.GetGeoLocation(IPAddress.Parse("213.205.251.152"), config);
             Assert.Equal("GB", result.CountryCode);
         }
-
     }
 }
