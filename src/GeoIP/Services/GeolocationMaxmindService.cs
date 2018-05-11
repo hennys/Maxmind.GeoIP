@@ -38,35 +38,28 @@ namespace Pixie.Extensions.Maxmind.GeoIp.Services
                 return null;
             }
 
-            try
+            using (var reader = new DatabaseReader(maxMindDatabaseFileName))
             {
-                using (var reader = new DatabaseReader(maxMindDatabaseFileName))
+                var dbResult = reader.City(address);
+
+                if (dbResult == null)
                 {
-                    var dbResult = reader.City(address);
-
-                    if (dbResult == null)
-                    {
-                        return null;
-                    }
-
-                    GeoLocationResult result = new GeoLocationResult();
-                    result.CountryCode = dbResult.Country.IsoCode;
-                    result.CountryName = dbResult.Country.Name;
-                    result.Latitude = dbResult.Location.Latitude ?? 0;
-                    result.Longitude = dbResult.Location.Longitude ?? 0;
-                    result.MetroCode = dbResult.Location.MetroCode ?? 0;
-                    result.City = dbResult.City.Name;
-                    result.PostalCode = dbResult.Postal.Code;
-                    result.CountinentCode = dbResult.Continent.Code;
-                    result.Region = dbResult?.MostSpecificSubdivision?.IsoCode;
-                    result.RegionName = dbResult.MostSpecificSubdivision?.Name;
-                    return result;
-
+                    return null;
                 }
-            }
-            catch (Exception ex)
-            {
-                throw;
+
+                GeoLocationResult result = new GeoLocationResult();
+                result.CountryCode = dbResult.Country.IsoCode;
+                result.CountryName = dbResult.Country.Name;
+                result.Latitude = dbResult.Location.Latitude ?? 0;
+                result.Longitude = dbResult.Location.Longitude ?? 0;
+                result.MetroCode = dbResult.Location.MetroCode ?? 0;
+                result.City = dbResult.City.Name;
+                result.PostalCode = dbResult.Postal.Code;
+                result.CountinentCode = dbResult.Continent.Code;
+                result.Region = dbResult?.MostSpecificSubdivision?.IsoCode;
+                result.RegionName = dbResult.MostSpecificSubdivision?.Name;
+                return result;
+
             }
         }
     }

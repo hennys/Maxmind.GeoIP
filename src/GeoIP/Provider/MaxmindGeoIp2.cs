@@ -13,11 +13,8 @@ namespace Pixie.Extensions.Maxmind.GeoIp.Provider
     {
 
         private readonly IGeolocationService geolocationService;
-        private const string DatabaseParameterName = "databaseFileName";
-        private string maxMindDatabaseFileName = "GeoLite2-City.mmdb";
-        NameValueCollection baseConfig = new NameValueCollection();
-        NameValueCollection extraConfig = new NameValueCollection();
-        private List<string> extraParamsArray;
+        private readonly NameValueCollection baseConfig = new NameValueCollection();
+        private readonly NameValueCollection extraConfig = new NameValueCollection();
         private Capabilities capabilities;
 
         public MaxmindGeoIp2() : 

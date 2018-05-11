@@ -11,7 +11,7 @@
     <PackageLicenseUrl>https://github.com/khurramkhang/Maxmind.GeoIP/blob/master/README.md</PackageLicenseUrl>
     <PackageOutputPath>$(SolutionDir)artifacts\</PackageOutputPath>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
