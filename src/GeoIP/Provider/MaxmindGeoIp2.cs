@@ -1,5 +1,4 @@
 ﻿using EPiServer.Personalization;
-using Pixie.Extensions.Maxmind.GeoIp.Initialization;
 using Pixie.Extensions.Maxmind.GeoIp.Models;
 using Pixie.Extensions.Maxmind.GeoIp.Services;
 using System;
@@ -21,10 +20,8 @@ namespace Pixie.Extensions.Maxmind.GeoIp.Provider
         private List<string> extraParamsArray;
         private Capabilities capabilities;
 
-        public MaxmindGeoIp2()
-        {
-            geolocationService = DependencyResolver.GeolocationService();
-        }
+        public MaxmindGeoIp2() : 
+            this(new GeolocationMaxmindService()) { }
 
         public MaxmindGeoIp2(IGeolocationService geolocationService)
         {
