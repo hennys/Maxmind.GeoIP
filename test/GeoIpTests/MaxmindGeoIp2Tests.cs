@@ -14,14 +14,14 @@ namespace GeoIpTests
 
         public MaxmindGeoIp2Tests()
         {
-            _databaseLocation = Path.Combine(Environment.CurrentDirectory, @"..\..\..\db\GeoLite2-City.mmdb");
+            _databaseLocation = Path.Combine(Environment.CurrentDirectory, @"..\..\..\db\GeoIP2-City-Test.mmdb");
         }
 
         [Fact]
         public void MaxmindServiceDBTest()
         {
             var config = new NameValueCollection { { "databaseFileName", _databaseLocation } };
-            var result = service.GetGeoLocation(IPAddress.Parse("213.205.251.152"), config);
+            var result = service.GetGeoLocation(IPAddress.Parse("81.2.69.160"), config);
             Assert.Equal("GB", result.CountryCode);
         }
 
