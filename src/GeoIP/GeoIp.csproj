@@ -5,6 +5,7 @@
     <VersionSuffix></VersionSuffix>
     <AssemblyName>Pixie.Extensions.Maxmind.GeoIp</AssemblyName>
     <RootNamespace>Pixie.Extensions.Maxmind.GeoIp</RootNamespace>
+    <PackageOutputPath>$(SolutionDir)artifacts\</PackageOutputPath>
     <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
