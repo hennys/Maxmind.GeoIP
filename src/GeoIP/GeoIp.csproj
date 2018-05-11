@@ -1,11 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionPrefix>2.0.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <AssemblyName>Pixie.Extensions.Maxmind.GeoIp</AssemblyName>
     <RootNamespace>Pixie.Extensions.Maxmind.GeoIp</RootNamespace>
+    <PackageId>PixieEPiServerExtensionMaxMindGeoIP2</PackageId>
+    <Authors>Khurram Khan</Authors>
+    <Description>To use Maxmind GeoIP2 in EPiServer</Description>
+    <PackageLicenseUrl>https://github.com/khurramkhang/Maxmind.GeoIP/blob/master/README.md</PackageLicenseUrl>
     <PackageOutputPath>$(SolutionDir)artifacts\</PackageOutputPath>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <!--<TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
