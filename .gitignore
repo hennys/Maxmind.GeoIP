@@ -12,5 +12,6 @@
 [Bb]in/
 [Oo]bj/
 
-
 packages/
+
+MigrationBackup/
