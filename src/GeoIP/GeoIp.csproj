@@ -10,8 +10,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EPiServer.Framework" Version="11.1.0" />
-    <PackageReference Include="MaxMind.GeoIP2" Version="2.9.0" />
+    <PackageReference Include="EPiServer.Framework" Version="[11.1.0,12)" />
+    <PackageReference Include="MaxMind.GeoIP2" Version="[2.9.0,3)" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
